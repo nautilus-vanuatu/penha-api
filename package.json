@@ -1,0 +1,22 @@
+{
+  "name": "penha-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "aleodoni <aleodoni@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --poll --respawn --transpile-only src/index.ts",
+    "test": "jest --no-cache"
+  },
+  "dependencies": {
+    "@aonautilus/ticketingcommon": "^1.0.7",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  }
+}
