@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Complaint {
+  id        Int             @id @default(autoincrement())
+  type      ComplaintType   @default(ESGOTO)
+  latitude  String
+  longitude String
+  desc      String?
+  status    Status          @default(ATIVO)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+enum Status {
+  ATIVO
+  INATIVO
+  RESOLVIDO
+}
+
+enum ComplaintType {
+  ESGOTO
+  LIXO
+  SEGURANCA
+  VANDALISMO
+}
