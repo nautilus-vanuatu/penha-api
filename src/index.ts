@@ -4,12 +4,8 @@ require('dotenv').config();
 import { app } from './app';
 
 const start = async () => {
-  if (!process.env.API_PORT) {
-    throw new Error('API_PORT must be defined');
-  }
-
-  if (!process.env.API_HOST) {
-    throw new Error('API_HOST must be defined');
+  if (!process.env.PORT) {
+    throw new Error('PORT must be defined');
   }
 
   if (!process.env.DATABASE_URL) {
@@ -23,8 +19,8 @@ const start = async () => {
   //   console.error(err);
   // }
 
-  app.listen(process.env.API_PORT, () => {
-    console.log(`Listening on port ${process.env.API_PORT}`);
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
   });
 }
 

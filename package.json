@@ -4,10 +4,14 @@
   "main": "index.js",
   "author": "aleodoni <aleodoni@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "clean": "rimraf dist",
     "build": "yarn clean && webpack --config webpack.prod.js",
     "dev": "ts-node-dev --poll --respawn --transpile-only src/index.ts",
+    "start": "node dist/bundle.js",
     "test": "jest --no-cache"
   },
   "jest": {
