@@ -14,12 +14,22 @@ model Complaint {
   latitude  String
   longitude String
   desc      String?
-  status    Status          @default(ATIVO)
+  status    Status          @default(REVISAO)
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
+  Images    Images[]
+}
+
+model Images {
+  id                Int             @id @default(autoincrement())
+  filename          String
+  originalFileName  String
+  complaint         Complaint       @relation(fields: [complaintId], references: [id])
+  complaintId       Int
 }
 
 enum Status {
+  REVISAO
   ATIVO
   INATIVO
   RESOLVIDO

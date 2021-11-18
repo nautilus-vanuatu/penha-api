@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-
 import { app } from './app';
 
 const start = async () => {

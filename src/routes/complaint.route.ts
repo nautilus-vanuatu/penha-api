@@ -5,11 +5,14 @@ import { requireAuth, validateRequest } from '@aonautilus/ticketingcommon';
 
 import { CreateComplaintService } from '../services/complaints/create.service';
 import { ListAllComplaints } from '../services/complaints/list-all.service';
+import { multerProvider } from '../config/multer.config';
 
 const router = express.Router();
+const upload = multerProvider();
 
 router.post(
   '/api/complaints',
+  upload.getInstance().array('image',5),
   // requireAuth,
   [
     body('type')
@@ -32,11 +35,12 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { type, latitude, longitude, desc, status } = req.body;
+    const { type, latitude, longitude, desc } = req.body;
+    const images = req.files as Express.Multer.File[];
 
     const createComplaintService = new CreateComplaintService();
 
-    const newComplaint = await createComplaintService.execute({ latitude, longitude, type, desc })
+    const newComplaint = await createComplaintService.execute({ latitude, longitude, type, desc, images })
 
     res.status(201).send(newComplaint);
 });
@@ -50,5 +54,15 @@ router.get(
 
     res.status(200).send(complaintsList);
 });
+
+router.post(
+  '/api/upload',
+  upload.getInstance().array('image',5),
+  async (req: Request, res: Response) => {
+    console.log(req.body);
+    console.log(req.files);
+    res.status(200).send({message: 'File uploaded'});
+  }
+);
 
 export { router as complaintRouter };
