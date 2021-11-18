@@ -4,6 +4,7 @@ import { body } from 'express-validator';
 import { requireAuth, validateRequest } from '@aonautilus/ticketingcommon';
 
 import { CreateComplaintService } from '../services/complaints/create.service';
+import { ListAllComplaints } from '../services/complaints/list-all.service';
 
 const router = express.Router();
 
@@ -38,6 +39,16 @@ router.post(
     const newComplaint = await createComplaintService.execute({ latitude, longitude, type, desc })
 
     res.status(201).send(newComplaint);
+});
+
+router.get(
+  '/api/all-complaints',
+  async (req: Request, res: Response) => {
+    const listAllComplaintsService = new ListAllComplaints();
+
+    const complaintsList = await listAllComplaintsService.execute();
+
+    res.status(200).send(complaintsList);
 });
 
 export { router as complaintRouter };
