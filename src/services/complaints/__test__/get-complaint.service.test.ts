@@ -2,8 +2,15 @@ import { Status, ComplaintType } from '@prisma/client';
 import { prismaMock } from '../../../test/setup';
 import { GetComplaintService } from '../get-complaint.service';
 
+const user = {
+  id: 1,
+  email: 'johndoe@gmail.com',
+  name: 'John Doe',
+};
+
 const complaint = {
   id: 1,
+  userId: user.id,
   latitude: '41.00031',
   longitude: '9.33321',
   type: ComplaintType.ESGOTO,

@@ -18,6 +18,8 @@ model Complaint {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
   Images    Images[]
+  user      User            @relation(fields: [userId], references: [id])
+  userId    Int
 }
 
 model Images {
@@ -26,6 +28,13 @@ model Images {
   originalFileName  String
   complaint         Complaint       @relation(fields: [complaintId], references: [id])
   complaintId       Int
+}
+
+model User {
+  id                Int             @id @default(autoincrement())
+  email             String          @unique()
+  name              String
+  complaints        Complaint[]
 }
 
 enum Status {

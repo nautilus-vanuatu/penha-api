@@ -1,8 +1,9 @@
 import { BadRequestError } from '@aonautilus/ticketingcommon';
-import { Complaint, Status, ComplaintType, Images } from '@prisma/client';
+import { Complaint, Status, ComplaintType, User } from '@prisma/client';
 import { prismaClient } from '../../config/prisma.config';
 
 type CreateComplaintType = {
+  userId: number;
   type: string;
   latitude: string;
   longitude: string;
@@ -18,6 +19,16 @@ type ImagesArray = {
 class CreateComplaintService {
 
   public async execute(dto: CreateComplaintType): Promise<Complaint> {
+    const userValid = await prismaClient.user.findUnique({
+      where: {
+        id: Number(dto.userId),
+      }
+    });
+
+    if (!userValid) {
+      throw new BadRequestError('User not found');
+    }
+
     const imagesArray: ImagesArray[] = [];
 
     dto.images?.map((image => {
@@ -30,10 +41,11 @@ class CreateComplaintService {
     try { 
       const newComplaint = await prismaClient.complaint.create({
         data: {
+          userId: Number(dto.userId),
           latitude: dto.latitude,
           longitude: dto.longitude,
           desc: dto.desc,
-          status: Status.ATIVO,
+          status: Status.REVISAO,
           type: dto.type as ComplaintType,
           Images: {
             create: [

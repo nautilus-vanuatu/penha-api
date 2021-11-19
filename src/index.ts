@@ -11,15 +11,8 @@ const start = async () => {
     throw new Error('DATABASE_URL must be defined');
   }
 
-  // try {
-  //   await mongoose.connect(process.env.MONGO_URI);
-  //   console.log('Connected to MongoDb');
-  // } catch (err) {
-  //   console.error(err);
-  // }
-
   app.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT}`);
+    console.log(`😈 API Listening on port ${process.env.PORT} 😈`);
   });
 }
 

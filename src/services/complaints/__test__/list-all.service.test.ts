@@ -5,6 +5,7 @@ import { ListAllComplaints } from '../list-all.service';
 const complaintList = [
   {
     id: 1,
+    userId: 1,
     latitude: '41.00031',
     longitude: '9.33321',
     type: ComplaintType.ESGOTO,
@@ -15,6 +16,7 @@ const complaintList = [
   },
   {
     id: 2,
+    userId: 1,
     latitude: '25.44321',
     longitude: '9.44334',
     type: ComplaintType.ESGOTO,

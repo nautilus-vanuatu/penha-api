@@ -5,6 +5,7 @@ import { BadRequestError } from '@aonautilus/ticketingcommon';
 
 const complaint = {
   id: 1,
+  userId: 1,
   latitude: '41.00031',
   longitude: '9.33321',
   type: ComplaintType.ESGOTO,
@@ -32,6 +33,19 @@ it('resolve complaint successfully', async () => {
   expect(resolvedComplaint.status).toEqual(Status.RESOLVIDO);
 });
 
+it('complaint not active', async () => {
+  const resolveComplaintService = new ResolveComplaintService();
+
+  prismaMock.complaint.findUnique.mockResolvedValue({
+    ...complaint,
+    status: Status.REVISAO
+  });
+
+  await expect(resolveComplaintService.execute({ id: complaint.id }))
+  .rejects
+  .toThrowError(new BadRequestError('Complaint not active'));
+});
+
 it('throws error complaint not found', async () => {
   const resolveComplaintService = new ResolveComplaintService();
 
@@ -42,19 +56,16 @@ it('throws error complaint not found', async () => {
   .toThrowError(new BadRequestError('Complaint not found'));
 });
 
-// it('generates BadRequestError when failed to create new complaint', async () => {
-//   const createComplaintService = new CreateComplaintService();
+it('throws error resolving complaint', async () => {
+  const resolveComplaintService = new ResolveComplaintService();
 
-//   const complaint = {
-//     latitude: '41.00031',
-//     longitude: '9.33321',
-//     type: ComplaintType.ESGOTO,
-//     desc: 'Esgoto na praia',
-//   }
+  prismaMock.complaint.findUnique.mockResolvedValue({
+    ...complaint,
+  });
 
-//   prismaMock.complaint.create.mockRejectedValue(new Error());
+  prismaMock.complaint.update.mockRejectedValue(new Error());
 
-//   await expect(createComplaintService.execute(complaint))
-//   .rejects
-//   .toThrowError(new BadRequestError('Error creating complaint'));
-// });
+  await expect(resolveComplaintService.execute({ id: complaint.id }))
+  .rejects
+  .toThrowError(new BadRequestError('Error resolving complaint'));
+});
